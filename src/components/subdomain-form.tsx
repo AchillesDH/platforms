@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
@@ -12,8 +11,11 @@ import { rootDomain } from "#/lib/consts";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { subdomainFormSchema } from "#/lib/schemas";
+import { useServerFn } from "@tanstack/react-start";
+import { createSubdomainFn } from "#/server/functions/subdomain";
 
 export function SubdomainForm() {
+  const $fn = useServerFn(createSubdomainFn);
   const form = useForm({
     defaultValues: {
       name: "",
@@ -23,21 +25,10 @@ export function SubdomainForm() {
       onSubmit: subdomainFormSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-
-      toast("You submitted the following values:", {
-        description: (
-          <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-            <code>{JSON.stringify(value, null, 2)}</code>
-          </pre>
-        ),
-        position: "bottom-right",
-        classNames: {
-          content: "flex flex-col gap-2",
-        },
-        style: {
-          "--border-radius": "calc(var(--radius)  + 4px)",
-        } as React.CSSProperties,
+      toast.promise($fn({ data: value }), {
+        loading: "Creating subdomain...",
+        success: "Subdomain created!",
+        error: (e) => `Failed to create subdomain: ${e.message}`
       });
     },
   });
@@ -95,10 +86,11 @@ export function SubdomainForm() {
         </form.Field>
 
         <form.Subscribe
-          selector={(s) => [s.canSubmit, s.isSubmitting, s.isPristine] as const}
+          selector={(s) => [s.canSubmit, s.isSubmitting, s.isPristine]}
         >
           {([canSubmit, isSubmitting, isPristine]) => (
             <Button
+              type="submit"
               disabled={!canSubmit || isSubmitting || isPristine}
               form="subdomain-form"
             >

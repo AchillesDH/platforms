@@ -1,6 +1,6 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "tanstack-start-app",
+    "name": "tss-platforms",
     "compatibility_date": "2025-09-02",
     "compatibility_flags": [
         "nodejs_compat"
@@ -10,7 +10,31 @@
     "kv_namespaces": [
         {
             "binding": "KV",
-            "id": "60f85c02ff814f1daa47a5b7f6a7262a"
+            "id": "a26f5e81103d45648a6f07a44d7cf901"
         }
-    ]
+    ],
+    "routes": [
+        {
+            "pattern": "tss-platforms.dev/*",
+            "zone_name": "tss-platforms.dev"
+        },
+        {
+            "pattern": "*.tss-platforms.dev/*",
+            "zone_name": "tss-platforms.dev"
+        }
+    ],
+    "observability": {
+        "enabled": true,
+        "logs": {
+            "enabled": true,
+            "head_sampling_rate": 1,
+            "invocation_logs": true,
+            "persist": true
+        },
+        "traces": {
+            "enabled": true,
+            "persist": true,
+            "head_sampling_rate": 1
+        }
+    }
 }
