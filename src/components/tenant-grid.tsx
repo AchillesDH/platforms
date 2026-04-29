@@ -1,5 +1,5 @@
 import type { Tenant } from "#/lib/types";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { EmptyTenantGrid } from "./empty-tenant-grid";
 import {
   Card,
@@ -10,14 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { cn } from "#/lib/utils";
-import { toast } from "sonner";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Delete01Icon } from "@hugeicons/core-free-icons";
 import { rootDomain } from "#/lib/consts";
-import { useServerFn } from "@tanstack/react-start";
-import { deleteSubdomainFn } from "#/server/functions/subdomain";
 import { DeleteTenantDialog } from "./delete-tenant-dialog";
 
 type Props = {
