@@ -1,9 +1,9 @@
-import { protocol, rootDomain } from "#/lib/consts";
+import { protocol, rootDomain } from "@/lib/consts";
 import { createServerFn } from "@tanstack/react-start";
 import { notFound, redirect } from "@tanstack/react-router";
 import { env } from "cloudflare:workers";
-import { subdomainFormSchema } from "#/lib/schemas";
-import type { SubdomainData, Tenant } from "#/lib/types";
+import { subdomainFormSchema } from "@/lib/schemas";
+import type { SubdomainData, Tenant } from "@/lib/types";
 
 export const createSubdomainFn = createServerFn({ method: "POST" })
     .inputValidator(subdomainFormSchema)

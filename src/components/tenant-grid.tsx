@@ -1,4 +1,4 @@
-import type { Tenant } from "#/lib/types";
+import type { Tenant } from "@/lib/types";
 import { Link } from "@tanstack/react-router";
 import { EmptyTenantGrid } from "./empty-tenant-grid";
 import {
@@ -11,8 +11,8 @@ import {
   CardTitle,
 } from "./ui/card";
 import { buttonVariants } from "./ui/button";
-import { cn } from "#/lib/utils";
-import { rootDomain } from "#/lib/consts";
+import { cn } from "@/lib/utils";
+import { rootDomain } from "@/lib/consts";
 import { DeleteTenantDialog } from "./delete-tenant-dialog";
 
 type Props = {
@@ -25,7 +25,7 @@ export function TenantGrid({ tenants }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-5 gap-4 grow">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 grow">
       {tenants.map((t) => (
         <Card size="sm">
           <CardHeader>
