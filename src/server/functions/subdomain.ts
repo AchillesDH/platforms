@@ -1,9 +1,9 @@
-import { protocol, rootDomain } from "#/lib/consts";
+import { protocol, rootDomain } from "@/lib/consts";
 import { createServerFn } from "@tanstack/react-start";
 import { notFound, redirect } from "@tanstack/react-router";
 import { env } from "cloudflare:workers";
-import { subdomainFormSchema } from "#/lib/schemas";
-import type { SubdomainData, Tenant } from "#/lib/types";
+import { subdomainFormSchema } from "@/lib/schemas";
+import type { SubdomainData, Tenant } from "@/lib/types";
 
 export const createSubdomainFn = createServerFn({ method: "POST" })
     .inputValidator(subdomainFormSchema)
@@ -32,7 +32,10 @@ export const createSubdomainFn = createServerFn({ method: "POST" })
         );
 
         throw redirect({
-            href: `${protocol}://${sanitizedSubdomain}.${rootDomain}`,
+            to: `/s/$subdomain`,
+            params: {
+                subdomain: sanitizedSubdomain
+            }
         });
     });
 
@@ -50,6 +53,8 @@ export const getSubdomainDataFn = createServerFn({ method: "GET" })
         if (!subdomain) {
             throw notFound();
         }
+
+        console.log("Found subdomain", subdomain)
 
         return subdomain;
     });

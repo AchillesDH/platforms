@@ -1,6 +1,9 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
-import { rootDomain } from "./lib/consts";
+import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
+
+import { routeTree } from "@/routeTree.gen";
+import { rootDomain } from "@/lib/consts";
+import { queryClient } from "@/integrations/react-query/context";
 
 function extractSubdomain(url: URL): string | null {
   const hostname = url.hostname;
@@ -37,6 +40,7 @@ function extractSubdomain(url: URL): string | null {
 export function getRouter() {
   const router = createTanStackRouter({
     routeTree,
+    context: { queryClient },
     rewrite: {
       input: ({ url }) => {
         const subdomain = extractSubdomain(url);
@@ -81,6 +85,13 @@ export function getRouter() {
     scrollRestoration: true,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
+  });
+
+  setupRouterSsrQueryIntegration({
+    router,
+    queryClient,
+    handleRedirects: true,
+    wrapQueryClient: true
   });
 
   return router;

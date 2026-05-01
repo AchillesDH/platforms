@@ -1,5 +1,5 @@
-import type { Tenant } from "#/lib/types";
-import { Link, useRouter } from "@tanstack/react-router";
+import type { Tenant } from "@/lib/types";
+import { Link } from "@tanstack/react-router";
 import { EmptyTenantGrid } from "./empty-tenant-grid";
 import {
   Card,
@@ -10,14 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Button, buttonVariants } from "./ui/button";
-import { cn } from "#/lib/utils";
-import { toast } from "sonner";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Delete01Icon } from "@hugeicons/core-free-icons";
-import { rootDomain } from "#/lib/consts";
-import { useServerFn } from "@tanstack/react-start";
-import { deleteSubdomainFn } from "#/server/functions/subdomain";
+import { buttonVariants } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { rootDomain } from "@/lib/consts";
 import { DeleteTenantDialog } from "./delete-tenant-dialog";
 
 type Props = {
@@ -30,9 +25,9 @@ export function TenantGrid({ tenants }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-5 gap-4 grow">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 grow">
       {tenants.map((t) => (
-        <Card size="sm">
+        <Card key={t.subdomain} size="sm">
           <CardHeader>
             <CardTitle>{t.name}</CardTitle>
             <CardDescription>

@@ -1,4 +1,4 @@
-import type { Tenant } from "#/lib/types";
+import type { Tenant } from "@/lib/types";
 import { DashboardHeader } from "./dashboard-header";
 import { TenantGrid } from "./tenant-grid";
 
