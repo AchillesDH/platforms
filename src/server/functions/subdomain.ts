@@ -32,7 +32,10 @@ export const createSubdomainFn = createServerFn({ method: "POST" })
         );
 
         throw redirect({
-            href: `${protocol}://${sanitizedSubdomain}.${rootDomain}`,
+            to: `/s/$subdomain`,
+            params: {
+                subdomain: sanitizedSubdomain
+            }
         });
     });
 
@@ -50,6 +53,8 @@ export const getSubdomainDataFn = createServerFn({ method: "GET" })
         if (!subdomain) {
             throw notFound();
         }
+
+        console.log("Found subdomain", subdomain)
 
         return subdomain;
     });

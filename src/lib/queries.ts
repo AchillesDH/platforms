@@ -1,14 +1,14 @@
 import { createSubdomainFn, deleteSubdomainFn, getAllSubdomainsFn, getSubdomainDataFn } from "@/server/functions/subdomain";
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 
-export const useCreateSubdomainMutationOptions = () => mutationOptions({
+export const createSubdomainMutationOptions = () => mutationOptions({
     mutationFn: createSubdomainFn,
     meta: {
         invalidatesQuery: ["subdomains"]
     }
 })
 
-export const useDeleteSubdomainMutationOptions = () => mutationOptions({
+export const deleteSubdomainMutationOptions = () => mutationOptions({
     mutationFn: deleteSubdomainFn,
     meta: {
         invalidatesQuery: ["subdomains"]

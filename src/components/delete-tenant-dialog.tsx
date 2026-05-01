@@ -1,4 +1,4 @@
-import { deleteSubdomainFn } from "#/server/functions/subdomain";
+import { deleteSubdomainFn } from "@/server/functions/subdomain";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,22 +14,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Delete01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useRouter } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { deleteSubdomainMutationOptions } from "@/lib/queries";
 
 type Props = {
   subdomain: string;
 };
 
 export function DeleteTenantDialog({ subdomain }: Props) {
-  // We need router reference for invalidating the loader that fetches the tenant data.
-  const router = useRouter();
-  const $fn = useServerFn(deleteSubdomainFn);
+  const mutation = useMutation(deleteSubdomainMutationOptions());
 
   const handleDelete = () => {
     toast.promise(
-      $fn({
+      mutation.mutateAsync({
         data: {
           subdomain,
         },
@@ -40,11 +38,6 @@ export function DeleteTenantDialog({ subdomain }: Props) {
         error: (e) => `Failed to delete tenant: ${e.message}`,
       },
     );
-
-    // Preferable to have use react-query and invalidate using queryKey
-    router.invalidate({
-      sync: true,
-    });
   };
   return (
     <AlertDialog>

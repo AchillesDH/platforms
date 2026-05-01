@@ -1,4 +1,4 @@
-import { protocol, rootDomain } from "#/lib/consts";
+import { protocol, rootDomain } from "@/lib/consts";
 import { buttonVariants } from "./ui/button";
 
 export function DashboardHeader() {

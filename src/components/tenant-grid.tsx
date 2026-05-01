@@ -27,7 +27,7 @@ export function TenantGrid({ tenants }: Props) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 grow">
       {tenants.map((t) => (
-        <Card size="sm">
+        <Card key={t.subdomain} size="sm">
           <CardHeader>
             <CardTitle>{t.name}</CardTitle>
             <CardDescription>

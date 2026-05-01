@@ -1,5 +1,5 @@
-import { SubdomainForm } from "#/components/subdomain-form";
-import { buttonVariants } from "#/components/ui/button";
+import { SubdomainForm } from "@/components/subdomain-form";
+import { buttonVariants } from "@/components/ui/button";
 import { rootDomain } from "@/lib/consts";
 import { createFileRoute, Link } from "@tanstack/react-router";
 

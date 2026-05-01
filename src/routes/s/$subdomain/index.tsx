@@ -1,16 +1,17 @@
-import { buttonVariants } from "#/components/ui/button";
-import { protocol, rootDomain } from "#/lib/consts";
-import { getSubdomainDataFn } from "#/server/functions/subdomain";
+import { buttonVariants } from "@/components/ui/button";
+import { protocol, rootDomain } from "@/lib/consts";
+import { getSubdomainDetailsOptions } from "@/lib/queries";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/s/$subdomain/")({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    return await getSubdomainDataFn({
-      data: {
-        subdomain: params.subdomain,
-      },
-    });
+  loader: async ({ context, params }) => {
+    const tenant = await context.queryClient.ensureQueryData(
+      getSubdomainDetailsOptions(params.subdomain),
+    );
+
+    return tenant;
   },
   head: ({ loaderData, params }) => ({
     meta: [
@@ -29,7 +30,10 @@ export const Route = createFileRoute("/s/$subdomain/")({
 
 function RouteComponent() {
   const { subdomain } = Route.useParams();
-  const subdomainData = Route.useLoaderData();
+  // Read the pre-loaded data from cache and subscribe to updates
+  const { data: tenant } = useSuspenseQuery(
+    getSubdomainDetailsOptions(subdomain),
+  );
 
   return (
     <div className="flex min-h-screen flex-col p-4">
@@ -44,7 +48,7 @@ function RouteComponent() {
 
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-9xl mb-6">{subdomainData.name}</div>
+          <div className="text-9xl mb-6">{tenant.name}</div>
           <h1 className="text-4xl font-bold tracking-tight">
             Welcome to {subdomain}.{rootDomain}
           </h1>

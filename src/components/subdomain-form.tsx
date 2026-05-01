@@ -7,15 +7,16 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "./ui/input-group";
-import { rootDomain } from "#/lib/consts";
+import { rootDomain } from "@/lib/consts";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { subdomainFormSchema } from "#/lib/schemas";
-import { useServerFn } from "@tanstack/react-start";
-import { createSubdomainFn } from "#/server/functions/subdomain";
+import { subdomainFormSchema } from "@/lib/schemas";
+import { useMutation } from "@tanstack/react-query";
+import { createSubdomainMutationOptions } from "@/lib/queries";
 
 export function SubdomainForm() {
-  const $fn = useServerFn(createSubdomainFn);
+  const mutation = useMutation(createSubdomainMutationOptions());
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -25,10 +26,11 @@ export function SubdomainForm() {
       onSubmit: subdomainFormSchema,
     },
     onSubmit: async ({ value }) => {
-      toast.promise($fn({ data: value }), {
+        // WARN: Toast does not work properly in a success state because of the redirect which causes a full refresh.
+      toast.promise(mutation.mutateAsync({ data: value }), {
         loading: "Creating subdomain...",
         success: "Subdomain created!",
-        error: (e) => `Failed to create subdomain: ${e.message}`
+        error: (e) => `Failed to create subdomain: ${e.message}`,
       });
     },
   });
@@ -86,15 +88,15 @@ export function SubdomainForm() {
         </form.Field>
 
         <form.Subscribe
-          selector={(s) => [s.canSubmit, s.isSubmitting, s.isPristine]}
+          selector={(s) => [s.canSubmit, s.isPristine]}
         >
-          {([canSubmit, isSubmitting, isPristine]) => (
+          {([canSubmit, isPristine]) => (
             <Button
               type="submit"
-              disabled={!canSubmit || isSubmitting || isPristine}
+              disabled={!canSubmit || mutation.isPending || isPristine}
               form="subdomain-form"
             >
-              {isSubmitting ? "Creating..." : "Create Subdomain"}
+              {mutation.isPending ? "Creating..." : "Create Subdomain"}
             </Button>
           )}
         </form.Subscribe>

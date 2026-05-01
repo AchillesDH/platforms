@@ -6,8 +6,8 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "#/components/ui/empty";
-import { protocol, rootDomain } from "#/lib/consts";
+} from "@/components/ui/empty";
+import { protocol, rootDomain } from "@/lib/consts";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { BlockGameIcon } from "@hugeicons/core-free-icons";
 
